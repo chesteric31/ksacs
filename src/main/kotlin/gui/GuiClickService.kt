@@ -15,10 +15,6 @@ class GuiClickService : ClickService {
 
     var threadPool: ScheduledExecutorService? = null
 
-    override fun buildScheduledThreadPool(): ScheduledExecutorService {
-        return Executors.newScheduledThreadPool(10)
-    }
-
     override fun click(periodInMilliseconds: Long) {
         threadPool = buildScheduledThreadPool()
         val frame = JFrame("KSACS")
@@ -43,6 +39,7 @@ class GuiClickService : ClickService {
         stopButton.addMouseListener(stopAdapter)
         frame.add(stopButton)
         frame.pack()
+        frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         frame.isVisible = true
     }
 

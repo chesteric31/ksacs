@@ -3,13 +3,16 @@ package api
 import java.awt.MouseInfo.getPointerInfo
 import java.awt.Robot
 import java.awt.event.InputEvent
+import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.timerTask
 
 interface ClickService {
 
-    fun buildScheduledThreadPool(): ScheduledExecutorService
+    fun buildScheduledThreadPool(): ScheduledExecutorService {
+        return Executors.newScheduledThreadPool(10)
+    }
 
     fun getScheduledThreadPool(): ScheduledExecutorService
 

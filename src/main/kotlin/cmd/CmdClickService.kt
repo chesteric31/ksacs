@@ -10,10 +10,6 @@ class CmdClickService : ClickService {
 
     var threadPool: ScheduledExecutorService? = null
 
-    override fun buildScheduledThreadPool(): ScheduledExecutorService {
-        return Executors.newScheduledThreadPool(10)
-    }
-
     override fun click(periodInMilliseconds: Long) {
         threadPool = buildScheduledThreadPool()
         startClick(periodInMilliseconds)
