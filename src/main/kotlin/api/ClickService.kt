@@ -23,15 +23,20 @@ interface ClickService {
         val scheduledThreadPool = getScheduledThreadPool()
         var oldX = getPointerInfo().location.x
         var oldY = getPointerInfo().location.y
+        var oldDevice = getPointerInfo().device;
+        val oldLocation = Location(oldX, oldY, oldDevice)
         scheduledThreadPool.scheduleAtFixedRate(timerTask {
             val newX = getPointerInfo().location.x
             val newY = getPointerInfo().location.y
-            if (isMoving(newX, newY, oldX, oldY)) {
+            val newDevice = getPointerInfo().device
+            val newLocation = Location(newX, newY, newDevice)
+            if (isMoving(newLocation, oldLocation)) {
                 val robot = Robot()
                 robot.mousePress(InputEvent.BUTTON1_MASK)
                 robot.mouseRelease(InputEvent.BUTTON1_MASK)
                 oldX = newX
-                oldY = oldY
+                oldY = newY
+                oldDevice = newDevice
             }
         }, 0, periodInMilliseconds, TimeUnit.MILLISECONDS)
     }
@@ -43,5 +48,8 @@ interface ClickService {
         }
     }
 
-    fun isMoving(newX: Int, newY: Int, oldX: Int, oldY: Int) = oldX != newX && oldY != newY
+    fun isMoving(newLocation: Location, oldLocation: Location) : Boolean {
+        var isMoving = oldLocation.x != newLocation.x && oldLocation.y != newLocation.y
+        return isMoving
+    }
 }

@@ -1,10 +1,10 @@
 package gui
 
 import api.ClickService
+import java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment
 import java.awt.GridBagLayout
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
-import java.util.concurrent.Executors
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
 import java.util.concurrent.ScheduledExecutorService
 import javax.swing.JButton
 import javax.swing.JFrame
@@ -20,27 +20,29 @@ class GuiClickService : ClickService {
         val frame = JFrame("KSACS")
         frame.layout = GridBagLayout()
         val clickButton = JButton("Left Click")
-        val clickAdapter: MouseAdapter = object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                super.mouseClicked(e)
-                startClick(periodInMilliseconds)
-            }
-        }
-        clickButton.addMouseListener(clickAdapter)
+        clickButton.addActionListener {  startClick(periodInMilliseconds) }
         frame.add(clickButton)
         val stopButton = JButton("Stop")
-        val stopAdapter: MouseAdapter = object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                super.mouseClicked(e)
+        stopButton.addActionListener(object : ActionListener {
+            override fun actionPerformed(e: ActionEvent) {
                 stopClick()
                 threadPool = buildScheduledThreadPool()
             }
-        }
-        stopButton.addMouseListener(stopAdapter)
+        })
         frame.add(stopButton)
         frame.pack()
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+        locate(frame)
         frame.isVisible = true
+    }
+
+    private fun locate(frame: JFrame) {
+        val graphicsEnvironment = getLocalGraphicsEnvironment()
+        val defaultScreen = graphicsEnvironment.defaultScreenDevice
+        val rectangle = defaultScreen.defaultConfiguration.bounds
+        val x = rectangle.maxX - frame.width
+        val y = rectangle.maxY - frame.height
+        frame.setLocation(x.toInt(), y.toInt())
     }
 
 }

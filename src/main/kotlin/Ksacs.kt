@@ -32,7 +32,7 @@ fun main(args: Array<String>) {
                     robot.mousePress(InputEvent.BUTTON1_MASK)
                     robot.mouseRelease(InputEvent.BUTTON1_MASK)
                     oldX = newX
-                    oldY = oldY
+                    oldY = newY
                 }
             }, 0, 1000, TimeUnit.MILLISECONDS)
         }

@@ -6,7 +6,7 @@ private val GUI = "-g"
 private val CMD = "-c"
 
 fun main(args: Array<String>) {
-    var periodInMilliseconds = 1000L
+    var periodInMilliseconds = 1500L
     printBanner()
     if (args.isEmpty()) {
         printUsages()
