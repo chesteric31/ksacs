@@ -23,8 +23,8 @@ interface ClickService {
         val scheduledThreadPool = getScheduledThreadPool()
         var oldX = getPointerInfo().location.x
         var oldY = getPointerInfo().location.y
-        var oldDevice = getPointerInfo().device;
-        val oldLocation = Location(oldX, oldY, oldDevice)
+        var oldDevice = getPointerInfo().device
+        var oldLocation = Location(oldX, oldY, oldDevice)
         scheduledThreadPool.scheduleAtFixedRate(timerTask {
             val newX = getPointerInfo().location.x
             val newY = getPointerInfo().location.y
@@ -37,6 +37,7 @@ interface ClickService {
                 oldX = newX
                 oldY = newY
                 oldDevice = newDevice
+                oldLocation = Location(oldX, oldY, oldDevice)
             }
         }, 0, periodInMilliseconds, TimeUnit.MILLISECONDS)
     }
@@ -49,7 +50,8 @@ interface ClickService {
     }
 
     fun isMoving(newLocation: Location, oldLocation: Location) : Boolean {
-        var isMoving = oldLocation.x != newLocation.x && oldLocation.y != newLocation.y
-        return isMoving
+        return oldLocation.x != newLocation.x
+                || oldLocation.y != newLocation.y
+                || !oldLocation.device.equals(newLocation.device)
     }
 }
