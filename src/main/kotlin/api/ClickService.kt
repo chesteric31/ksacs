@@ -31,7 +31,7 @@ interface ClickService {
             val newDevice = getPointerInfo().device
             val newLocation = Location(newX, newY, newDevice)
             if (isMoving(newLocation, oldLocation)) {
-                val robot = Robot()
+                val robot = Robot(newDevice)
                 robot.mousePress(InputEvent.BUTTON1_MASK)
                 robot.mouseRelease(InputEvent.BUTTON1_MASK)
                 oldX = newX
